@@ -48,6 +48,22 @@ under, and the conclusions are written at that scale and no larger.
   different angles. That makes the sweep in `How fast the rotation runs` the one
   place where a difference cannot be a size difference, and the reach column
   beside it is arithmetic on the geometry rather than a measurement.
+- **Where the four choices come from.** RMSNorm is Zhang & Sengupta, arXiv
+  [1910.07467](https://arxiv.org/abs/1910.07467); RoPE is Su et al.,
+  [2104.09864](https://arxiv.org/abs/2104.09864); the gated feed-forward is
+  Shazeer's, [2002.05202](https://arxiv.org/abs/2002.05202); grouped-query
+  attention is Ainslie et al.,
+  [2305.13245](https://arxiv.org/abs/2305.13245). The controls are the
+  mechanisms those displaced: LayerNorm (Ba et al.,
+  [1607.06450](https://arxiv.org/abs/1607.06450)) and learned absolute positions
+  (Vaswani et al., [1706.03762](https://arxiv.org/abs/1706.03762)). Every one of
+  (Vaswani et al., [1706.03762](https://arxiv.org/abs/1706.03762)). Both sides of
+  every pair are written out in `src/llamanat/blocks.py` and
+  `src/llamanat/positional.py` rather than pulled from a library -- the single
+  component taken from torch is the `nn.LayerNorm` control, which is the
+  mechanism being displaced rather than one being claimed -- so a disagreement
+  between a row and its control is about the mechanism, not about a package
+  default.
 - **Curves, not snapshots.** Each row is *one* training trajectory scored at
   checkpoints 300/600/900/1200, because these tasks are learned by phase
   transition: a single fixed step records where a variant happens to sit
