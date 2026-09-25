@@ -120,8 +120,10 @@ prints seed 0 of the addition, recall and extrapolation tables and `llamanat
 alphabet` prints the alphabet table's 600-step column. Earlier versions of those
 commands trained a smaller split and so read below the tables they were quoting,
 which is the failure mode the test exists to prevent. A full rerun at the
-environment the block below names reproduced all twelve in-domain cells and all
-six transfer cells exactly the same way.
+environment the block below names reproduced the committed artifact field for
+field -- every cell of every table, the rotation sweep, the answer-alphabet
+control, the settings and the environment record -- and the only key that moved
+was the wall-clock.
 
 The other half of the picture is why the tables print every seed beside the mean.
 Float reduction over a batch depends on the build and the thread count, and an
