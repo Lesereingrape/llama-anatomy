@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llamanat"
+version = "0.1.0"
+description = "A from-scratch ~100k-parameter LLaMA decoder (RMSNorm, RoPE, SwiGLU, grouped-query attention) with an equal-parameter ablation of every one of those choices, a train-short/test-long study of RoPE against learned absolute positions, and a parameter-free sweep of RoPE's rotation base. CPU-only, multi-seed, verifiable tasks."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Lesereingrape" }]
+keywords = [
+    "llama",
+    "transformer",
+    "rope",
+    "swiglu",
+    "grouped-query-attention",
+    "rmsnorm",
+    "ablation",
+    "pytorch",
+]
+dependencies = ["torch>=2.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.14,<0.15"]
+
+[project.scripts]
+llamanat = "llamanat.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "UP", "RUF", "B", "C4", "SIM", "FURB"]
+ignore = ["SIM105"]
