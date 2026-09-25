@@ -16,7 +16,7 @@ seeds per row, no GPU and no API key.
 LLaMA's component evidence is a scaling sweep at 7B–65B. Nobody can re-run that,
 which means the usual explanations of *why* rotary positions or gated
 feed-forwards are standard practice are assertions most of us have never been
-able to check. At a fifth of a million parameters the whole ablation matrix,
+able to check. At a tenth of a million parameters the whole ablation matrix,
 rotation sweep included, is a half-hour CPU job, so the claims can be re-derived,
 and the interesting question stops being "does this scale" and becomes "what does
 this mechanism actually do" — measurable at the only scale you can afford several
@@ -56,7 +56,6 @@ under, and the conclusions are written at that scale and no larger.
   [2305.13245](https://arxiv.org/abs/2305.13245). The controls are the
   mechanisms those displaced: LayerNorm (Ba et al.,
   [1607.06450](https://arxiv.org/abs/1607.06450)) and learned absolute positions
-  (Vaswani et al., [1706.03762](https://arxiv.org/abs/1706.03762)). Every one of
   (Vaswani et al., [1706.03762](https://arxiv.org/abs/1706.03762)). Both sides of
   every pair are written out in `src/llamanat/blocks.py` and
   `src/llamanat/positional.py` rather than pulled from a library -- the single
