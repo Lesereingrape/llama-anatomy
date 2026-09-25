@@ -48,6 +48,11 @@ TRAIN_PAIRS = 4
 PROBE_PAIRS = (4, 8, 12)
 POSITION_VARIANTS = ("llama", "abs_pos")
 
+#: A length probe is scored on as many fresh sequences as an evaluation slice,
+#: so the demo command and the published extrapolation table read samples of the
+#: same size instead of two different ones that happen to share a name.
+PROBE_N = TASKS["recall"].n_eval
+
 #: the control on the task itself: does the alphabet the answer is written in
 #: change what a block of this size can fit? One seed each, both positional
 #: variants at the same budget as the matrix, plus the obvious explanation for
@@ -97,7 +102,7 @@ def run_theta_sweep() -> dict:
         out: dict[str, dict] = {}
         for pairs in THETA_PROBE_PAIRS:
             out[str(pairs)] = _summary(
-                [probe(f, pairs, spec, n=200) for f in fitted])
+                [probe(f, pairs, spec, n=PROBE_N) for f in fitted])
         rows.append({
             "rope_theta": theta,
             "params": fitted[0].params,
@@ -141,7 +146,7 @@ def run_answer_alphabet() -> dict:
                       for step, acc in sorted(fitted.curve.items())},
             "probe": {
                 "pairs": ALPHABET_PROBE_PAIRS,
-                "mean": probe(fitted, ALPHABET_PROBE_PAIRS, spec, n=200),
+                "mean": probe(fitted, ALPHABET_PROBE_PAIRS, spec, n=PROBE_N),
             },
         })
     return {
@@ -218,7 +223,7 @@ def run_extrapolation() -> dict:
             if pairs == TRAIN_PAIRS:
                 accs = [round(score(f.model, f.eval_items), 4) for f in fitted]
             else:
-                accs = [probe(f, pairs, spec, n=200) for f in fitted]
+                accs = [probe(f, pairs, spec, n=PROBE_N) for f in fitted]
             curves[str(pairs)] = _summary(accs)
         out[variant] = {
             "trained_on_pairs": TRAIN_PAIRS,

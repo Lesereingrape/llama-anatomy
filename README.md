@@ -71,8 +71,8 @@ under, and the conclusions are written at that scale and no larger.
 pip install -e .[dev]
 
 llamanat cache                # exact KV-cache arithmetic, no training
-llamanat demo                 # train one block, print its generated carry chains
-llamanat alphabet             # the same recall task in two answer alphabets
+llamanat demo                 # seed 0 at the published budget, with its carry chains
+llamanat alphabet             # the alphabet table's own task, at its 600-step column
 python experiments/run_study.py    # the full 3-seed matrix -> results/anatomy.json
 python experiments/make_report.py  # print the README block from that JSON
 python experiments/make_report.py --write   # and splice it into README.md
@@ -97,9 +97,15 @@ process is internally exact: the study re-fits the reference model through four
 independent code paths — the matrix, the extrapolation probe, the rotation sweep,
 and the answer-alphabet control — and their per-seed numbers agree to the last
 decimal, which is what makes the tables one experiment rather than four opinions
-about it. `tests/test_readme.py` asserts that agreement on the committed file. A
-full rerun at the environment the block below names reproduced all twelve
-in-domain cells and all six transfer cells exactly the same way.
+about it. `tests/test_readme.py` asserts that agreement on the committed file. The
+two training commands in the Quickstart are held to the same bar: a test pins their
+task, batch and learning rate to the study's own settings, so `llamanat demo`
+prints seed 0 of the addition, recall and extrapolation tables and `llamanat
+alphabet` prints the alphabet table's 600-step column. Earlier versions of those
+commands trained a smaller split and so read below the tables they were quoting,
+which is the failure mode the test exists to prevent. A full rerun at the
+environment the block below names reproduced all twelve in-domain cells and all
+six transfer cells exactly the same way.
 
 The other half of the picture is why the tables print every seed beside the mean.
 Float reduction over a batch depends on the build and the thread count, and an

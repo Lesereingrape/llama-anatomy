@@ -7,9 +7,11 @@ plan in `llamanat.study`, and a rendered block that silently lost a variant.
 
 from __future__ import annotations
 
+import inspect
 import json
 import re
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -272,3 +274,27 @@ def test_prose_does_not_claim_a_transfer_result_the_data_withholds(data, readme)
         "the sentence and the gap disagree")
     assert "Arithmetic rather than measurement" in body, \
         "the cache table must declare itself non-empirical"
+
+
+def test_the_demo_commands_grade_the_published_splits():
+    """The Quickstart points at ``llamanat alphabet`` to see the alphabet table.
+
+    The command used to train on 1000 sequences and grade 64 of them, so it
+    printed 0.344 where the table says 0.905 for the same seed, model and step
+    count: a smaller split, not a smaller model. A demo that undercuts the table
+    it is quoting is worse than no demo, so the specs have to come from the study.
+    """
+    from llamanat import cli
+    from llamanat.tasks import ANSWER_MODES
+
+    assert cli.TASKS is TASKS
+    published = TASKS["recall"]
+    assert published.n_eval == cli.PROBE_N
+    for mode in ANSWER_MODES:
+        spec = cli._recall_spec(mode)
+        assert spec == replace(published, answer=mode)
+        assert (spec.n_train, spec.n_eval) == (published.n_train,
+                                               published.n_eval)
+    source = inspect.getsource(cli)
+    assert "lr=" not in source, \
+        "the demo must not retune an optimiser the study already fixed"
