@@ -67,3 +67,16 @@ def test_the_promised_runtime_is_the_runtime_that_was_measured():
     assert 0.5 * claimed <= minutes <= 2.0 * claimed, (
         f"README promises a ~{claimed:.0f}-minute job; the committed artifact took "
         f"{minutes:.1f} minutes")
+
+
+def test_readme_names_the_std_convention_the_tables_use():
+    """`+/-` is ambiguous unless the file says which divisor produced it.
+
+    The published spreads are the population standard deviation over seeds, so the
+    README has to use that word: a reader who recomputed the other convention would
+    land on a different number and conclude the tables were wrong.
+    """
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert re.search("population[^.]{0,60}standard\\s+deviation", readme), (
+        "the README no longer states which standard-deviation convention its "
+        "`+/-` columns use")

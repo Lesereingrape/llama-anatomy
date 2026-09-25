@@ -132,7 +132,10 @@ cells — always a seed sitting close enough to an acquisition threshold that th
 order of addition decides it, and in one case a single seed of the addition
 `layernorm` row going from 0.000 to 0.505. So the README reports the curves and
 the seed lists rather than a guarantee about your machine, and the block below
-names the python, torch and thread count these fits actually ran under.
+names the python, torch and thread count these fits actually ran under. Each `±` is the
+**population** standard deviation of the seeds in that row (`statistics.pstdev`, divided
+by n), so recomputing it from the printed seed list is a two-line exercise, not a guess
+at which convention was used.
 
 ## Results
 
